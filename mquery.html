@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>METIS | Historical Query</title>
+  
+    
+    <!-- Bootstrap CSS -->
+    <link href="curdata_files/bootstrap.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <script src="curdata_files/fontawesome-all.js.download"></script>
+    <!-- Modern Dashboard CSS -->
+    <link href="style/modern_dashboard.css" rel="stylesheet">
+    <link rel="stylesheet" href="curdata_files/jquery-ui-1.12.1/jquery-ui.css">
+    
+    <!-- jQuery and Highcharts -->
+    <script src="curdata_files/jquery-2.2.4.min.js.download"></script>
+    <script src="curdata_files/bootstrap.min.js.download"></script>
+    <script src="curdata_files/jquery-ui-1.12.1/jquery-ui.js"></script>
+    <script src="code/highcharts.js"></script>
+    <script src="code/modules/exporting.js"></script>
+    <script src="code/modules/export-data.js"></script>
+    <script src="code/modules/accessibility.js"></script>
+</head>
+<body class="animate-fade-in">
+    <!-- Header Logo -->
+    <nav class="navbar modern-navbar navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-sidebar-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">
+                    <img src="./curdata_files/MET_MAUSAM_DASHBOARD.png" alt="METIS Logo" style="height: 40px;">
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
+                <!-- Sidebar will be loaded here from list_code.html -->
+            </div>
+            <div class="navbar-right hidden-xs">
+                <div id="current_time" class="time-display">
+                    <i class="far fa-clock"></i> <span id="txt">00:00:00</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container main-content" style="margin-top: 80px;">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-title"><i class="fas fa-history"></i> Historical Data Query</h1>
+                <p class="update-info">Search and analyze archived meteorological records</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="weather-card animate-fade-in">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label style="color: #fff;"><i class="fas fa-list"></i> Parameter</label>
+                                <select class="form-control" id="param" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2);">
+                                    <option value="output_wd.csv">Wind Direction</option>
+                                    <option value="output_ws.csv">Wind Speed</option>
+                                    <option value="output_temp.csv">Temperature</option>
+                                    <option value="output_rh.csv">Humidity</option>
+                                    <option value="output_u.csv">Zonal Wind</option>
+                                    <option value="output_v.csv">Meridional Wind</option>
+                                    <option value="output_pr.csv">Pressure</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label style="color: #fff;"><i class="fas fa-calendar-alt"></i> Start Date</label>
+                                <input type="text" id="datepicker" class="form-control" placeholder="YYYY-MM-DD" autocomplete="off" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2);">
+                            </div>
+                        </div>
+                        <div class="col-md-3" id="endDateContainer" style="display:none">
+                            <div class="form-group">
+                                <label style="color: #fff;"><i class="fas fa-calendar-alt"></i> End Date</label>
+                                <input type="text" id="datepickerEnd" class="form-control" placeholder="YYYY-MM-DD" autocomplete="off" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2);">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label style="color: #fff;"><i class="fas fa-sync"></i> Mode</label>
+                            <div class="checkbox" style="margin-top: 5px;">
+                                <label style="color: #ddd;">
+                                    <input type="checkbox" id="rangeToggle" onchange="toggleRange()"> Enable Date Range
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12 text-center" style="margin-top: 15px;">
+                            <button id="viewbutton" class="btn btn-primary btn-lg" onclick="requestData()" style="background: #e94560; border: none; font-weight: bold; width: 300px;">
+                                <i class="fas fa-search"></i> View Historical Data
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" id="plotArea" style="display:none">
+            <div class="col-lg-12">
+                <div class="weather-card animate-fade-in">
+                    <div id="histChart" style="height: 500px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let histChart;
+
+        function listcode() {
+            $("#bs-sidebar-navbar-collapse-1").load("list_code.html");
+        }
+
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('txt').innerHTML = now.toLocaleTimeString();
+            setTimeout(updateTime, 1000);
+        }
+
+        $(function() {
+            $('#datepicker, #datepickerEnd').datepicker({
+                dateFormat: 'yy-mm-dd',
+                maxDate: 0
+            });
+            listcode();
+            updateTime();
+        });
+
+        function toggleRange() {
+            const isRange = document.getElementById('rangeToggle').checked;
+            document.getElementById('endDateContainer').style.display = isRange ? 'block' : 'none';
+        }
+
+        async function requestData() {
+            const file = $('#param').val();
+            const dateStr = $('#datepicker').val();
+            const dateEndStr = $('#datepickerEnd').val();
+            const isRange = document.getElementById('rangeToggle').checked;
+            const paramName = $("#param option:selected").text();
+            
+            if (!dateStr) {
+                alert("Please select a start date");
+                return;
+            }
+
+            if (isRange && !dateEndStr) {
+                alert("Please select an end date");
+                return;
+            }
+
+            const btn = document.getElementById("viewbutton");
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+
+            try {
+                let url = `get_csv_data.jsp?file=${file}`;
+                if (isRange) {
+                    url += `&startDate=${dateStr}&endDate=${dateEndStr}`;
+                } else {
+                    url += `&date=${dateStr}&lines=300`;
+                }
+
+                const response = await fetch(url);
+                if (!response.ok) throw new Error("Server error");
+                const data = await response.json();
+
+                if (!data || data.length === 0) {
+                    alert("No data found for the selected criteria");
+                    document.getElementById("plotArea").style.display = "none";
+                } else {
+                    document.getElementById("plotArea").style.display = "block";
+                    renderChart(paramName, data, isRange ? `${dateStr} to ${dateEndStr}` : dateStr);
+                }
+            } catch (e) {
+                console.error(e);
+                alert("Error fetching historical data");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-search"></i> View Historical Data';
+            }
+        }
+
+        function renderChart(name, data, dateLabel) {
+            const plotData = data.map(d => [new Date(d.timestamp).getTime(), parseFloat(d.actual)]);
+            const isRange = document.getElementById('rangeToggle').checked;
+            
+            histChart = Highcharts.chart('histChart', {
+                chart: { zoomType: 'x', backgroundColor: 'transparent' },
+                title: { text: name + ' - Historical Data (' + dateLabel + ')', style: { color: '#e94560' } },
+                subtitle: { text: isRange ? 'Showing up to 1000 records for the selected range' : 'Showing latest 300 records for the selected date', style: { color: '#aaa' } },
+                xAxis: { type: 'datetime', labels: { style: { color: '#ccc' } } },
+                yAxis: { title: { text: name, style: { color: '#ccc' } }, labels: { style: { color: '#ccc' } } },
+                legend: { enabled: false },
+                credits: { enabled: false },
+                tooltip: { shared: true, valueDecimals: 2 },
+                series: [{
+                    name: name,
+                    data: plotData,
+                    color: '#00f2fe',
+                    lineWidth: 2,
+                    marker: { enabled: false }
+                }]
+            });
+        }
+    </script>
+</body>
+</html>

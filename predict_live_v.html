@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>METIS | Meridional Wind Prediction</title>
+   
+    
+    <!-- Bootstrap CSS -->
+    <link href="curdata_files/bootstrap.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <script src="curdata_files/fontawesome-all.js.download"></script>
+    <!-- Modern Dashboard CSS -->
+    <link href="style/modern_dashboard.css" rel="stylesheet">
+    
+    <!-- jQuery and Highcharts -->
+    <script src="curdata_files/jquery-2.2.4.min.js.download"></script>
+    <script src="curdata_files/bootstrap.min.js.download"></script>
+    <script src="code/highcharts.js"></script>
+    <script src="code/modules/exporting.js"></script>
+    <script src="code/modules/export-data.js"></script>
+    <script src="code/modules/accessibility.js"></script>
+</head>
+<body class="animate-fade-in">
+    <!-- Header Logo -->
+    <nav class="navbar modern-navbar navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-sidebar-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">
+                    <img src="./curdata_files/MET_MAUSAM_DASHBOARD.png" alt="METIS Logo" style="height: 40px;">
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
+                <!-- Sidebar will be loaded here from list_code.html -->
+            </div>
+            <div class="navbar-right hidden-xs">
+                <div id="current_time" class="time-display">
+                    <i class="far fa-clock"></i> <span id="txt">00:00:00</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container main-content" style="margin-top: 80px;">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-title"><i class="fas fa-chart-line"></i> Meridional Wind (V) Prediction</h1>
+                <p id="updatetime" class="update-info">Last Updated: --</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="weather-card animate-fade-in">
+                    <h3><i class="fas fa-arrows-alt-v fa-pulse"></i> Actual vs Predicted Meridional Wind</h3>
+                    <div id="predictionChart" style="height: 500px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="weather-card text-center">
+                    <h4 style="color: #ccc;">Latest Actual</h4>
+                    <div class="data-value" id="actualVal" style="color: #fbc531;">0.0 m/s</div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="weather-card text-center">
+                    <h4 style="color: #ccc;">Latest Prediction</h4>
+                    <div class="data-value" id="predVal" style="color: #00f2fe;">0.0 m/s</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function listcode() {
+            $("#bs-sidebar-navbar-collapse-1").load("list_code.html");
+        }
+
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('txt').innerHTML = now.toLocaleTimeString();
+            setTimeout(updateTime, 1000);
+        }
+
+        let predictionChart;
+
+        function initChart() {
+            predictionChart = Highcharts.chart('predictionChart', {
+                chart: { zoomType: 'x', backgroundColor: 'transparent' },
+                title: { text: 'Meridional Wind Forecast Analysis', style: { color: '#e94560' } },
+                credits: { enabled: false },
+                xAxis: { type: 'datetime', labels: { style: { color: '#ccc' } } },
+                yAxis: { title: { text: 'Wind Speed (m/s)', style: { color: '#ccc' } }, labels: { style: { color: '#ccc' } } },
+                legend: { itemStyle: { color: '#ccc' } },
+                tooltip: { shared: true, valueDecimals: 2 },
+                series: [
+                    { name: 'Actual Value', data: [], color: '#fbc531', lineWidth: 2 },
+                    { name: 'Predicted Value', data: [], color: '#00f2fe', lineWidth: 2, dashStyle: 'Dash' }
+                ]
+            });
+        }
+
+        function parseCSV(csvData) {
+            const lines = csvData.trim().split('\n');
+            if (lines.length <= 1) return [];
+
+            const header = lines[0].split(',').map(h => h.trim().toLowerCase());
+            const timeIdx = header.indexOf('datetime');
+            const actualIdx = header.indexOf('trueval');
+            const predIdx = header.indexOf('predval');
+
+            if (timeIdx === -1) return [];
+
+            const lastLines = lines.slice(1).slice(-300);
+            return lastLines.map(line => {
+                const cols = line.split(',');
+                const obj = { timestamp: cols[timeIdx]?.trim() };
+                if (actualIdx !== -1) obj.actual = parseFloat(cols[actualIdx]?.trim());
+                if (predIdx !== -1) obj.prediction = parseFloat(cols[predIdx]?.trim());
+                return obj;
+            });
+        }
+
+        function fetchData() {
+            $.get('MAUSAM%20CSV%20FILES/output_v.csv', function(csvData) {
+                const data = parseCSV(csvData);
+                if (data && data.length > 0) {
+                    const actualSeries = data.filter(d => !isNaN(d.actual)).map(d => [new Date(d.timestamp).getTime(), d.actual]);
+                    const predSeries = data.filter(d => !isNaN(d.prediction)).map(d => [new Date(d.timestamp).getTime(), d.prediction]);
+                    
+                    predictionChart.series[0].setData(actualSeries);
+                    predictionChart.series[1].setData(predSeries);
+                    
+                    const latest = data[data.length - 1];
+                    if (!isNaN(latest.actual)) document.getElementById('actualVal').innerHTML = latest.actual.toFixed(1) + ' m/s';
+                    if (!isNaN(latest.prediction)) document.getElementById('predVal').innerHTML = latest.prediction.toFixed(1) + ' m/s';
+                    document.getElementById('updatetime').innerHTML = "Last Updated: " + latest.timestamp;
+                }
+            }, 'text');
+        }
+
+        $(document).ready(function() {
+            listcode();
+            updateTime();
+            initChart();
+            fetchData();
+            setInterval(fetchData, 60000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+/* To push down the body of the page below nav bars */
+body {
+  padding-top: 205px;
+}
+/* To push down the second nav bar below first */
+.secondnavbar {
+	  top:100px;
+}
+
+/* Dropdown submenu */
+
+.dropdown-submenu {
+  position: relative;
+}
+
+.dropdown-submenu a::after {
+  transform: rotate(-90deg);
+  position: absolute;
+  right: 6px;
+  top: .8em;
+}
+
+.dropdown-submenu .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-left: .1rem;
+  margin-right: .1rem;
+}
+
+/* Banner Format */
+#banner,.navbar .navbar-default{
+  /* background-color: rgba(71,86,109, 1); */
+  background: url('../cloud/color.png');
+  background-color: #005288;   
+}
+
+#mainmenu,.navbar .navbar-default{
+  background-color: rgba(19,106,156, 1);
+  /* background-color: rgba(71,86,109, 1); */
+  /* background-color: #005288;  */
+}
+/*
+{
+  background: url('../cloud/fourteen.jpg');
+  background-color: #005288;
+  z-index:500;
+  border-color: #F3901D;
+  border-bottom-width: 3px;
+}
+*/

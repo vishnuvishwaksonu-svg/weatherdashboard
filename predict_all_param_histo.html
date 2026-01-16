@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>METIS | Historical Predictions</title>
+    <link rel="icon" type="image/png" href="isro.png">
+    
+    <!-- Bootstrap CSS -->
+    <link href="curdata_files/bootstrap.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <script src="curdata_files/fontawesome-all.js.download"></script>
+    <!-- Modern Dashboard CSS -->
+    <link href="style/modern_dashboard.css" rel="stylesheet">
+    <link rel="stylesheet" href="curdata_files/jquery-ui-1.12.1/jquery-ui.css">
+    
+    <!-- jQuery and Highcharts -->
+    <script src="curdata_files/jquery-2.2.4.min.js.download"></script>
+    <script src="curdata_files/bootstrap.min.js.download"></script>
+    <script src="curdata_files/jquery-ui-1.12.1/jquery-ui.js"></script>
+    <script src="code/highcharts.js"></script>
+    <script src="code/modules/exporting.js"></script>
+    <script src="code/modules/export-data.js"></script>
+    <script src="code/modules/accessibility.js"></script>
+</head>
+<body class="animate-fade-in">
+    <!-- Header Logo -->
+    <nav class="navbar modern-navbar navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-sidebar-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">
+                    <img src="./curdata_files/MET_MAUSAM_DASHBOARD.png" alt="METIS Logo" style="height: 40px;">
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
+                <!-- Sidebar will be loaded here from list_code.html -->
+            </div>
+            <div class="navbar-right hidden-xs">
+                <div id="current_time" class="time-display">
+                    <i class="far fa-clock"></i> <span id="txt">00:00:00</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container main-content" style="margin-top: 80px;">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-title"><i class="fas fa-file-alt"></i> Historical Predictions</h1>
+                <p class="update-info">Compare historical actual data with model predictions</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="weather-card animate-fade-in">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label style="color: #fff;"><i class="fas fa-list"></i> Parameter</label>
+                                <select class="form-control" id="param" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2);">
+                                    <option value="output_temp.csv">Temperature</option>
+                                    <option value="output_rh.csv">Humidity</option>
+                                    <option value="output_pr.csv">Pressure</option>
+                                    <option value="output_u.csv">Zonal Wind</option>
+                                    <option value="output_v.csv">Meridional Wind</option>
+                                    <option value="output_ws.csv">Wind Speed</option>
+                                    <option value="output_wd.csv">Wind Direction</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label style="color: #fff;"><i class="fas fa-calendar-alt"></i> Select Date</label>
+                                <input type="text" id="datepicker" class="form-control" placeholder="YYYY-MM-DD" autocomplete="off" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2);">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label>&nbsp;</label>
+                            <button id="viewbutton" class="btn btn-primary btn-block" onclick="requestData()" style="background: #e94560; border: none; font-weight: bold;">
+                                <i class="fas fa-search"></i> Compare Data
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" id="plotArea" style="display:none">
+            <div class="col-lg-12">
+                <div class="weather-card animate-fade-in">
+                    <div id="predictionHistChart" style="height: 500px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function listcode() {
+            $("#bs-sidebar-navbar-collapse-1").load("list_code.html");
+        }
+
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('txt').innerHTML = now.toLocaleTimeString();
+            setTimeout(updateTime, 1000);
+        }
+
+        $(function() {
+            $('#datepicker').datepicker({
+                dateFormat: 'yy-mm-dd',
+                maxDate: 0
+            });
+            listcode();
+            updateTime();
+        });
+
+        async function requestData() {
+            const file = $('#param').val();
+            const dateStr = $('#datepicker').val();
+            const paramName = $("#param option:selected").text();
+            
+            if (!dateStr) {
+                alert("Please select a date");
+                return;
+            }
+
+            const btn = document.getElementById("viewbutton");
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+
+            try {
+                const response = await fetch(`get_csv_data.jsp?file=${file}&date=${dateStr}&lines=300`);
+                if (!response.ok) throw new Error("Server error");
+                const data = await response.json();
+
+                if (!data || data.length === 0) {
+                    alert("No historical prediction data found for: " + dateStr);
+                    document.getElementById("plotArea").style.display = "none";
+                } else {
+                    document.getElementById("plotArea").style.display = "block";
+                    renderChart(paramName, data, dateStr);
+                }
+            } catch (e) {
+                console.error(e);
+                alert("Error fetching historical prediction data");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-search"></i> Compare Data';
+            }
+        }
+
+        function renderChart(name, data, date) {
+            const actualSeries = data.filter(d => d.actual).map(d => [new Date(d.timestamp).getTime(), parseFloat(d.actual)]);
+            const predSeries = data.filter(d => d.prediction).map(d => [new Date(d.timestamp).getTime(), parseFloat(d.prediction)]);
+            
+            Highcharts.chart('predictionHistChart', {
+                chart: { zoomType: 'x', backgroundColor: 'transparent' },
+                title: { text: name + ' Prediction Analysis (' + date + ')', style: { color: '#e94560' } },
+                subtitle: { text: 'Comparison of Actual vs Predicted values', style: { color: '#aaa' } },
+                xAxis: { type: 'datetime', labels: { style: { color: '#ccc' } } },
+                yAxis: { title: { text: name, style: { color: '#ccc' } }, labels: { style: { color: '#ccc' } } },
+                legend: { itemStyle: { color: '#ccc' } },
+                credits: { enabled: false },
+                tooltip: { shared: true, valueDecimals: 2 },
+                series: [
+                    { name: 'Actual Value', data: actualSeries, color: '#ff4b2b', lineWidth: 2, marker: { enabled: false } },
+                    { name: 'Predicted Value', data: predSeries, color: '#00f2fe', lineWidth: 2, dashStyle: 'Dash', marker: { enabled: false } }
+                ]
+            });
+        }
+    </script>
+</body>
+</html>

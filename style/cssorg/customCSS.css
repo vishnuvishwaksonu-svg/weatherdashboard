@@ -1,0 +1,619 @@
+@font-face {
+  font-family: 'Zekton Free';
+    src:  url('../fonts/ZEKTON_FREE.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+	/*font-family:"Zekton Free",ZEKTON_FREE;*/
+	font-family:"Zekton Free";
+	font-size:14px;
+	/*font-weight:300;*/
+	font-weight:bold;
+	line-height:1.6em;
+	color:#333;
+	background-color : #233465;
+}
+.navbar-default {
+	 background-color: #233465; /* this is background of isro logo band */
+	 	border-color: black;
+		
+}
+.navbar-custom{
+
+color: white;
+background-color: black;
+
+}
+
+.navbar-header-custom{
+background: img/headerLogo2.jpg;
+}
+
+.label-message{
+color: white;
+
+}
+.center-aligned-message1{
+
+padding-left: 1%;
+
+}
+
+.center-aligned-message2{
+
+padding-left: 18%;
+
+}
+
+
+footer {
+ /* background: #000000;*/
+  
+}
+
+.footerheading {
+  font-size: 24px;
+  /* color: yellow; */
+  color : rgb(167,165,104);
+  font-weight: bold;
+  margin-top: 0;
+  margin-bottom: 10px;
+  
+}
+
+.f-about{
+	
+	margin-left: 10%;
+}
+
+.f-contact{
+	border-right: 2px solid white;
+}
+.f-contact-last{
+	border-right: 0px solid white;
+}
+.f-contact p {
+  font-size: 14px;
+  color: white;
+  margin: 0;
+  
+  font-weight: 300;
+  text-align: justify;
+  
+}
+
+.f-contact i {
+  color: #56595f;
+  font-size: 16px;
+  margin-right: 5px;
+}
+
+.f-contactlist {
+  color: #56595f;
+  /*font-size: 12px;*/
+ border-right: 2px solid white;
+}
+
+
+.f-contact a:hover p{
+  color: yellow;
+}
+
+/* to right align the footer text to right */
+
+.ulList1{
+
+	text-align : right;
+	
+}
+
+.ulList1 li a{
+  color: white;
+   
+}
+
+.ulList1 li a:hover{
+   color: yellow; 
+  
+  
+  
+}
+.ulList2{
+  padding-bottom: 4px;
+   font-weight:normal;
+}
+
+.inner-footer {
+  padding: 2px 0;
+}
+
+.copyright {
+    font-size: 14px;
+    color: #8a8d94;
+    margin: 0;
+    text-align:center;
+    font-weight: bold;
+    margin-left: 30%;
+}
+
+ .navbar-brand{ 
+  background: url(/img/headerLogo3.png) center / contain no-repeat;
+  width: 100%;
+  height: 75%;
+}
+/***********
+***********************
+Responsive navbar-brand image CSS
+- Remove navbar-brand padding for firefox bug workaround
+- add 100% height and width auto ... similar to how bootstrap img-responsive class works
+***********************************/
+
+.navbar-brand {
+  padding: 0px;
+}
+.navbar-brand img {
+  height: 100%;
+  
+  width: auto;
+}
+
+
+.container{
+
+width: 100%;
+}
+
+.slider{
+background-color: black;
+width : 100%;
+}
+
+
+
+.navstrip{
+/*background-color: #4E5C67;/* in the image it is #4E5C67*/
+background-color : rgb(79,93,104);
+
+width : 100%;
+height: 2%;
+/*margin-left: 3.5%;*/
+/*opacity: 0.5; */
+}
+
+
+/*this is for the wrapper class of the image slider */
+
+.bx-wrapper {
+    position: relative;
+    margin: 0 auto 1px;
+    padding: 0;
+    *zoom: 1;
+}
+
+
+/* this is for dots in the image */
+
+.bx-wrapper .bx-pager .bx-pager-item, .bx-wrapper .bx-controls-auto .bx-controls-auto-item {
+	display: none;/* how to display dots for image selection -inline-block*/
+	*zoom: 1;
+	*display: inline;
+	
+}
+
+
+
+/* this is for navbar */
+
+.navbar {
+    position: relative;
+    min-height: 20px;
+    margin-bottom: 0px;
+    border: 1px solid transparent;
+}
+
+/* this is for footer */
+
+footer {
+  background: black;
+  width : 100%;
+ /* margin-left: 3.5%;*/
+  
+}
+
+/* this is for prev and next buttons of slider */
+
+.bx-wrapper .bx-controls-direction a {
+	position: absolute;
+	top: 50%;
+	margin-top: -16px;
+	outline: 0px;
+	width: 20px;
+	height: 32px;
+	text-indent: -9999px;
+	z-index: 0;
+}
+
+.bx-wrapper .bx-prev {
+	left: 0px;
+	background: url(img/controls.png) no-repeat 0 -32px;
+}
+
+.bx-wrapper .bx-next {
+	right: 0px;
+	background: url(img/controls.png) no-repeat -43px -32px;
+}
+
+
+
+* {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+
+
+.navbar {
+	/*position: relative;
+	min-height: 50px;
+	margin-bottom: 20px;*/
+	 border: 1px solid transparent;
+}
+
+
+.aboutus-text{
+color: white;
+
+}
+
+
+/* background for nav tabs */
+
+.nav-tabs > li.active > a {
+	color: white; /* color for chaing the text color of the selected tab */
+	cursor: default;
+	/*background-color: yellow; color for active menu tab */
+	background-color: rgb(167,165,104);
+	border: 0;
+	border-bottom-color: transparent;
+}
+
+.nav > li > a {
+	position: relative;
+	display: block;
+	padding: 5px 25px; /*thickness of navigation div home */
+	color : white; /* this is for menu font color */
+}
+
+
+
+.menu{
+/*opacity: 0.7;*/ /* if you enable this code menu will not be visibile */
+
+}
+
+
+
+
+
+
+
+.navbar-nav > li >.dropdown-menu {
+	z-index: 9999;
+	
+}
+
+/*
+.inner-footer ul li, a {
+	list-style: none;
+	border : 2px;
+}
+*/
+/* this code is for mouse over drop down started*/
+
+/* Dropdown Button */
+.dropbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+	}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: relative;
+        display: inline-block;
+		
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+	
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+     background-color: #3e8e41; 
+	 	 
+}
+
+
+
+/* this code is for mouse over drop down ended*/
+
+    
+	.nav .open > a:focus {
+    background-color: rgb(167,165,104); /* This is for isro centres on focus */
+    border-color: #337ab7;
+}
+.nav-tabs > li.active > a:hover {
+	color: #fff;
+	border: 0;
+	background-color: rgb(167,165,104);/* This is for on mouse over selcted menu item HOME on selected item */
+	 cursor: pointer;
+}
+	
+	
+.dropdown-menu .divider {
+  height: 1px;
+  margin: 1px 0; /* this is for divider in drop down menu */
+  overflow: hidden;
+  background-color: #e5e5e5;
+}
+.containerpic {
+  padding-right: 15px;
+  padding-left: 0px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+
+.navbar-collapse1 {
+  padding-right: 15px;
+  padding-left: 1px;
+  overflow-x: visible;
+  -webkit-overflow-scrolling: touch;
+  border-top: 1px solid transparent;
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1);
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1);
+}
+
+
+
+.container1 {
+  padding-right: 1px;
+  padding-left: 1px;  /* this code is for container size */
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.footerheading2{
+font-size: 18px;
+  /* color: yellow; */
+  color : rgb(254,243,18);
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  
+	text-align : right;
+}
+
+
+.containerdir {
+  padding-right: 0px;
+  padding-left: 0px;
+  margin-right: auto;
+  margin-left: auto;
+  padding-top: 10px;
+}
+.f-aboutdir{
+	
+	margin-left: 1%;
+}
+
+.footerheading2updt{
+font-size: 18px;
+  /* color: yellow; */
+  color : rgb(254,243,18);
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  
+	text-align : center;
+}
+
+
+.ulList12 li a{
+  color: black;
+ 
+   
+}
+.ulList12 li a:hover{
+   color: blue; 
+ }
+
+.ulList12 : hover {
+  display:block;
+  color: yellow;
+ 
+   
+}
+
+
+
+/* for tabs in image gallery */
+
+.imageGalleryDiv{
+	margin-left : 10%;
+	border : 2px white solid;
+}
+			/** Start: to style navigation tab **/
+			
+			.galleryBackgroundColor{
+					background-color : rgb(79,93,104);'
+					
+			}
+			.galleryTabs {
+			  margin-bottom: 18px;
+			  margin-left: 0; 
+			  list-style: none;
+			  
+			}
+			.galleryCategoryList {
+list-style: none;
+
+}
+
+.galleryCategoryList  > li > a{
+		color : yellow;
+}
+.galleryCategoryList > li{
+		margin-bottom : 5%;
+}
+
+
+			.galleryTabs > li > a {
+			  display: block;
+			  
+			}
+
+			.galleryTabs{
+			  *zoom: 1;
+			}
+
+			/*
+			.galleryTabs:before,
+			.galleryTabs:after {
+			  display: table;
+			  content: "";
+			}
+			*/
+
+			.galleryTabs:after {
+			  clear: both;
+			}
+
+			.galleryTabs > li {
+			  float: left;
+			}
+
+			.galleryTabs > li > a {
+			  padding-right: 12px;
+			  padding-left: 12px;
+			  margin-right: 2px;
+			  line-height: 14px;
+			}
+
+			.galleryTabsDiv{
+					border-bottom : 1 solid white;
+					margin-top : 0px;
+					margin-left : -10 px;
+			}
+
+			.galleryTabs > li {
+			  margin-bottom: -1px;
+			}
+
+			.galleryTabs > li > a {
+			  padding-top: 8px;
+			  padding-bottom: 8px;
+			  line-height: 18px;
+			  border: 1px solid transparent;
+			  -webkit-border-radius: 4px 4px 0 0;
+				 -moz-border-radius: 4px 4px 0 0;
+					  border-radius: 4px 4px 0 0;
+			}
+
+			.galleryTabs> li > a:hover {
+			  border-color: #eeeeee #eeeeee #dddddd;
+			}
+
+			.galleryTabs > .active > a,
+			.galleryTabs > .active > a:hover {
+			  color: #ffffff;
+			  cursor: default;
+			  background-color: black;
+			  
+			  border-bottom-color: transparent;
+			}
+
+			li {
+			  line-height: 18px;
+			}
+
+			.tab-content.active{
+				display: block;
+			}
+
+			.tab-content.hide{
+				display: none;
+			}
+
+
+			/** End: to style navigation tab **/
+	
+/* for gallery headings */
+.galleryHeadings{
+		color : yellow;
+		font-size : 20px;
+		margin-left : 50%;
+}
+.vgalleryHeadings{
+		color : yellow;
+		font-size : 20px;
+		margin-left : 30%;
+}
+
+.gvideoLinks{
+color : yellow;
+}
+
+/* for entities */
+
+.leftSideButtons{
+	/*border : solid white;  */
+	margin-left : -5%;
+}
+
+.entitiesButtons{
+	/*background: transparent url('../img/Mission1.png'); */
+	background-color : white;
+	
+	
+	margin-bottom : 20px;
+	
+	
+}
+
+.btn-lg, .btn-group-lg > .btn {
+	padding: 2px 50px;
+	font-size: 18px;
+	line-height: 1.33;
+	border-radius: 6px;
+}

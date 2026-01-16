@@ -1,0 +1,37 @@
+# Large Data Files (Meteorological Records)
+MAUSAM\ CSV\ FILES/
+*.csv
+*.txt
+
+# Java & Web App Build Artifacts
+WEB-INF/classes/
+WEB-INF/lib/*.jar
+*.class
+
+# Tooling & IDEs
+.zencoder/
+.zenflow/
+.settings/
+.project
+.classpath
+.vscode/
+.idea/
+
+# OS Specific
+Thumbs.db
+.DS_Store
+
+# Temporary & Backup Files
+*~
+*.swp
+*.bak
+*.tmp
+*.log
+
+# Compressed Archives
+*.zip
+*.rar
+*.7z
+
+# Source Maps
+*.js.map

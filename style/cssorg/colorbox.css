@@ -1,0 +1,53 @@
+/*
+    ColorBox Core Style:
+    The following CSS is consistent between example themes and should not be altered.
+*/
+#colorbox, #cboxOverlay, #cboxWrapper{position:absolute; top:0; left:0; z-index:9999; overflow:hidden;}
+#cboxOverlay{position:fixed; width:100%; height:100%;}
+#cboxMiddleLeft, #cboxBottomLeft{clear:left;}
+#cboxContent{position:relative;}
+#cboxLoadedContent{overflow:auto;}
+#cboxTitle{margin:0;}
+#cboxLoadingOverlay, #cboxLoadingGraphic{position:absolute; top:0; left:0; width:100%; height:100%;}
+#cboxPrevious, #cboxNext, #cboxClose, #cboxSlideshow{cursor:pointer;}
+.cboxPhoto{float:left; margin:auto; border:0; display:block; max-width:none;}
+.cboxIframe{width:100%; height:100%; display:block; border:0;}
+#colorbox, #cboxContent, #cboxLoadedContent{box-sizing:content-box;}
+
+/* 
+    User Style:
+    Change the following styles to modify the appearance of ColorBox.  They are
+    ordered & tabbed in a way that represents the nesting of the generated HTML.
+*/
+#cboxOverlay{background:#0f0b06;}
+#colorbox{}
+    #cboxTopLeft{width:14px; height:14px; background:url(../images/controls.png) no-repeat 0 0;}
+    #cboxTopCenter{height:14px; background:url(../images/border.png) repeat-x top left;}
+    #cboxTopRight{width:14px; height:14px; background:url(../images/controls.png) no-repeat -36px 0;}
+    #cboxBottomLeft{width:14px; height:43px; background:url(../images/controls.png) no-repeat 0 -32px;}
+    #cboxBottomCenter{height:43px; background:url(../images/border.png) repeat-x bottom left;}
+    #cboxBottomRight{width:14px; height:43px; background:url(../images/controls.png) no-repeat -36px -32px;}
+    #cboxMiddleLeft{width:14px; background:url(../images/controls.png) repeat-y -175px 0;}
+    #cboxMiddleRight{width:14px; background:url(../images/controls.png) repeat-y -211px 0;}
+    #cboxContent{background:#fff; overflow:visible;}
+.cboxIframe{background:#fff;}
+#cboxError{padding:50px; border:1px solid #ccc;}
+#cboxLoadedContent{margin-bottom:5px;}
+#cboxLoadingOverlay{background:url(../images/loading_background.png) no-repeat center center;}
+#cboxLoadingGraphic{background:url(../images/loading.gif) no-repeat center center;}
+#cboxTitle{position:relative; bottom:-8px; left:2px; text-align:left; width:95%; font-family:Arial, Helvetica, sans-serif; font-size:12px; color:#fff; line-height:14px;}
+#cboxCurrent{position:absolute; top:5px; left:5px; opacity:0.5; filter:alpha(opacity = 50); font-weight:normal; font-family:Arial, Helvetica, sans-serif; font-size:11px; color:#fff; line-height:14px;}
+
+#cboxClose, #cboxSlideshow{position:absolute; bottom:-29px; background:url(../images/controls.png) no-repeat 0px 0px; width:23px; height:23px; text-indent:-9999px;}
+#cboxPrevious, #cboxNext {position:absolute; width:60px; height:30px; text-indent:-9999px;}
+#cboxPrevious{bottom:20px; left:0px; background:url(../images/prev-colorbox-icon.png);}
+#cboxPrevious:hover{bottom:20px; left:0px; background:url(../images/prev-colorbox-icon.png);}
+#cboxNext{bottom:20px; right:0px; background:url(../images/next-colorbox-icon.png);}
+#cboxNext:hover{bottom:20px; right:0px; background:url(../images/next-colorbox-icon.png);}
+#cboxClose{top:0px; right:3px; background:url(../images/close-regular-colorbox-icon.png);}
+#cboxClose:hover{top:0px; right:3px; background:url(../images/close-hover-colorbox-icon.png);}
+
+.cboxSlideshow_on #cboxSlideshow{background:url(../images/pause-colorbox-icon.png); right:0px; bottom:-26px;}
+.cboxSlideshow_on #cboxSlideshow:hover{}
+.cboxSlideshow_off #cboxSlideshow{background:url(../images/play-colorbox-icon.png); right:0px;bottom:-26px;}
+.cboxSlideshow_off #cboxSlideshow:hover{}

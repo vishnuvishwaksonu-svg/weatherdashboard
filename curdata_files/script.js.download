@@ -1,0 +1,51 @@
+
+/* Shows accordion section open when a link to that section is clicked*/
+// $(document).ready(function () {
+//   if (location.hash){
+//     $(location.hash).collapse('show');
+//     console.log(location.hash);
+//     //$(location.hash).parents('.accordion-body').collapse('show');
+//   }
+
+//   /* Active accordion header */
+//   $('.panel-collapse').on('show.bs.collapse', function () {
+//     $(this).siblings('.panel-heading').addClass('active');
+//   });
+
+//   $('.panel-collapse').on('hide.bs.collapse', function () {
+//     $(this).siblings('.panel-heading').removeClass('active');
+//   });
+// });
+
+
+function formHandler(form) {
+
+        var URL = form.site.options[form.site.selectedIndex].value;
+
+        window.location.href = URL;
+
+    }
+
+function startTime() {
+    var today = new Date();
+    var h = today.getHours();
+    var m = today.getMinutes();
+    var s = today.getSeconds();
+    m = checkTime(m);
+    s = checkTime(s);
+    document.getElementById('txt').innerHTML =
+    h + ":" + m + ":" + s;
+    var t = setTimeout(startTime, 500);
+}
+function checkTime(i) {
+    if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+    return i;
+}
+
+
+
+/*
+$('#accordion > .panel').on('show.bs.collapse', function (e) {
+    $(this).find('.panel-heading').addClass("active-panel")
+});*/
+

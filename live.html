@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>METIS | Live Data</title>
+    
+    
+    <!-- Bootstrap CSS -->
+    <link href="curdata_files/bootstrap.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <script src="curdata_files/fontawesome-all.js.download"></script>
+    <!-- Modern Dashboard CSS -->
+    <link href="style/modern_dashboard.css" rel="stylesheet">
+    
+    <!-- jQuery and Highcharts -->
+    <script src="curdata_files/jquery-2.2.4.min.js.download"></script>
+    <script src="curdata_files/bootstrap.min.js.download"></script>
+    <script src="code/highcharts.js"></script>
+    <script src="code/modules/exporting.js"></script>
+    <script src="code/modules/export-data.js"></script>
+    <script src="code/modules/accessibility.js"></script>
+</head>
+<body class="animate-fade-in">
+    <!-- Header Logo -->
+    <nav class="navbar modern-navbar navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-sidebar-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">
+                    <img src="./curdata_files/MET_MAUSAM_DASHBOARD.png" alt="METIS Logo" style="height: 40px;">
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
+                <!-- Sidebar will be loaded here from list_code.html -->
+            </div>
+            <div class="navbar-right hidden-xs">
+                <div id="current_time" class="time-display">
+                    <i class="far fa-clock"></i> <span id="txt">00:00:00</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container main-content" style="margin-top: 80px;">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-title"><i class="fas fa-broadcast-tower"></i> Live Weather Data</h1>
+                <p id="updatetime" class="update-info">Last Updated: --</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Parameter Selection and Charts -->
+            <div class="col-md-12">
+                <div class="weather-card animate-fade-in">
+                    <h3><i class="fas fa-chart-line fa-pulse"></i> Live Trends (Last 300 Records)</h3>
+                    <div id="liveChart" style="height: 500px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Real-time Values -->
+        <div class="row">
+            <div class="col-md-2 col-sm-4">
+                <div class="weather-card text-center">
+                    <i class="fas fa-wind fa-2x text-primary mb-2"></i>
+                    <div class="data-value" id="wsdata" style="font-size: 1.2rem;">0.0</div>
+                    <small>Wind Speed (m/s)</small>
+                </div>
+            </div>
+            <div class="col-md-2 col-sm-4">
+                <div class="weather-card text-center">
+                    <i class="fas fa-compass fa-2x text-warning mb-2"></i>
+                    <div class="data-value" id="wddata" style="font-size: 1.2rem;">0</div>
+                    <small>Direction (°)</small>
+                </div>
+            </div>
+            <div class="col-md-2 col-sm-4">
+                <div class="weather-card text-center">
+                    <i class="fas fa-thermometer-half fa-2x text-danger mb-2"></i>
+                    <div class="data-value" id="tempdata" style="font-size: 1.2rem;">0.0</div>
+                    <small>Temp (°C)</small>
+                </div>
+            </div>
+            <div class="col-md-2 col-sm-4">
+                <div class="weather-card text-center">
+                    <i class="fas fa-tint fa-2x text-info mb-2"></i>
+                    <div class="data-value" id="humdata" style="font-size: 1.2rem;">0</div>
+                    <small>Humidity (%)</small>
+                </div>
+            </div>
+            <div class="col-md-2 col-sm-4">
+                <div class="weather-card text-center">
+                    <i class="fas fa-compress-alt fa-2x text-success mb-2"></i>
+                    <div class="data-value" id="pressdata" style="font-size: 1.2rem;">0.0</div>
+                    <small>Pressure (hPa)</small>
+                </div>
+            </div>
+            <div class="col-md-2 col-sm-4">
+                <div class="weather-card text-center">
+                    <i class="fas fa-arrows-alt-h fa-2x text-muted mb-2"></i>
+                    <div class="data-value" id="udata" style="font-size: 1.2rem;">0.0</div>
+                    <small>Zonal (m/s)</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function listcode() {
+            $("#bs-sidebar-navbar-collapse-1").load("list_code.html");
+        }
+
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('txt').innerHTML = now.toLocaleTimeString();
+            setTimeout(updateTime, 1000);
+        }
+
+        let liveChart;
+
+        function initChart() {
+            liveChart = Highcharts.chart('liveChart', {
+                chart: { zoomType: 'xy', backgroundColor: 'transparent' },
+                title: { text: 'Multi-Parameter Live Overview', style: { color: '#e94560' } },
+                credits: { enabled: false },
+                xAxis: { type: 'datetime', labels: { style: { color: '#ccc' } } },
+                yAxis: [
+                    { title: { text: 'Value', style: { color: '#ccc' } }, labels: { style: { color: '#ccc' } } }
+                ],
+                legend: { itemStyle: { color: '#ccc' } },
+                tooltip: { shared: true },
+                series: [
+                    { name: 'Wind Speed', data: [], color: '#00f2fe' },
+                    { name: 'Temperature', data: [], color: '#ff4b2b' },
+                    { name: 'Humidity', data: [], color: '#4facfe' },
+                    { name: 'Pressure', data: [], color: '#00dc82' },
+                    { name: 'Zonal Wind', data: [], color: '#f9d423' }
+                ]
+            });
+        }
+
+        function parseCSV(csvData) {
+            const lines = csvData.trim().split('\n');
+            if (lines.length <= 1) return [];
+
+            const header = lines[0].split(',').map(h => h.trim().toLowerCase());
+            const timeIdx = header.indexOf('datetime');
+            const valIdx = header.indexOf('trueval');
+
+            if (timeIdx === -1 || valIdx === -1) return [];
+
+            const lastLines = lines.slice(1).slice(-300);
+            return lastLines.map(line => {
+                const cols = line.split(',');
+                if (cols.length > Math.max(timeIdx, valIdx)) {
+                    const t = cols[timeIdx].trim();
+                    const v = parseFloat(cols[valIdx].trim());
+                    if (!isNaN(v)) {
+                        return { timestamp: t, actual: v };
+                    }
+                }
+                return null;
+            }).filter(d => d !== null);
+        }
+
+        function fetchData() {
+            const params = [
+                { id: 'wsdata', file: 'output_ws.csv', seriesIdx: 0 },
+                { id: 'tempdata', file: 'output_temp.csv', seriesIdx: 1 },
+                { id: 'humdata', file: 'output_rh.csv', seriesIdx: 2 },
+                { id: 'pressdata', file: 'output_pr.csv', seriesIdx: 3 },
+                { id: 'udata', file: 'output_u.csv', seriesIdx: 4 },
+                { id: 'wddata', file: 'output_wd.csv' }
+            ];
+
+            params.forEach(p => {
+                $.get(`MAUSAM%20CSV%20FILES/${p.file}`, function(csvData) {
+                    const data = parseCSV(csvData);
+                    if (data && data.length > 0) {
+                        const latest = data[data.length - 1];
+                        const val = latest.actual;
+                        document.getElementById(p.id).innerHTML = val.toFixed(1);
+                        
+                        if (p.seriesIdx !== undefined) {
+                            const plotData = data.map(d => [new Date(d.timestamp).getTime(), d.actual]);
+                            liveChart.series[p.seriesIdx].setData(plotData, false);
+                        }
+                        
+                        if (p.id === 'wsdata') {
+                            document.getElementById('updatetime').innerHTML = "Last Updated: " + latest.timestamp;
+                        }
+                    }
+                }, 'text');
+            });
+            setTimeout(() => liveChart.redraw(), 1500);
+        }
+
+        $(document).ready(function() {
+            listcode();
+            updateTime();
+            initChart();
+            fetchData();
+            setInterval(fetchData, 60000);
+        });
+    </script>
+</body>
+</html>

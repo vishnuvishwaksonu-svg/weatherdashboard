@@ -1,0 +1,141 @@
+.led-box {
+
+  height: 30px;
+
+  width: 25%;
+
+  margin: 10px 0;
+
+  float: left;
+
+}
+
+
+
+.led-box p {
+
+  font-size: 12px;
+
+  text-align: center;
+
+  margin: 1em;
+
+}
+
+
+
+.led-red {
+
+  margin: 0 auto;
+
+  width: 80px;
+
+  height: 40px;
+
+  /*background-color: #F00;*/
+
+  border:1px solid  #336600;
+
+  border-radius: 15%;
+
+  box-shadow: rgba(0, 0, 0, 0.2) 0 1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 12px;
+
+
+  -webkit-animation: blinkRed 0.0s infinite;
+
+  -moz-animation: blinkRed 0.0s infinite;
+
+  -ms-animation: blinkRed 0.0s infinite;
+
+  -o-animation: blinkRed 0.0s infinite;
+
+  animation: blinkRed 0.0s infinite;
+
+}
+
+
+
+@-webkit-keyframes blinkRed {
+
+    from { background-color: #F00; }
+
+    50% { background-color: #A00; box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 0;}
+
+    to { background-color: #F00; }
+
+}
+
+@-moz-keyframes blinkRed {
+
+    from { background-color: #F00; }
+
+    50% { background-color: #A00; box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 0;}
+
+    to { background-color: #F00; }
+
+}
+
+@-ms-keyframes blinkRed {
+
+    from { background-color: #F00; }
+
+    50% { background-color: #A00; box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 0;}
+
+    to { background-color: #F00; }
+
+}
+
+@-o-keyframes blinkRed {
+
+    from { background-color: #F00; }
+
+    50% { background-color: #A00; box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 0;}
+
+    to { background-color: #F00; }
+
+}
+
+@keyframes blinkRed {
+
+    from { background-color: #F00; }
+
+    50% { background-color: #A00; box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 0;}
+
+    to { background-color: #F00; }
+
+}
+
+
+
+.led-green{
+
+  margin: 0 auto;
+
+  width:80px;
+
+  height: 40px;
+
+  /*background-color: #336600;*/
+
+  border:3px solid #336600;
+
+  border-radius: 15%;
+
+  box-shadow: rgba(0, 0, 0, 0.2) 0 1px 7px 1px, inset #3908601 0 -1px 9px, #80ff00 0 2px 12px;
+
+}
+
+.weather{
+
+border:1px solid #0086b3; 
+border-radius:10%; 
+margin-left:30%;
+padding:2%; 
+width:120%;
+}
+
+.wind-speed-value-10m,.wind-speed-value-100m {
+    border:1px solid #0086b3; 
+    border-radius:10%; 
+    padding:2%; 
+}
